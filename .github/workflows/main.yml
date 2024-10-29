@@ -2,10 +2,11 @@ name: Update Contributors Information
 
 on:
   workflow_dispatch: {}
+  schedule:
+    # Weekly on Saturdays.
+    - cron: "30 1 * * 6"
   push:
     branches: [main]
-    paths:
-      - 'MAINTAINERS.md'  # Only trigger when relevant file changes
 
 jobs:
   update-contributors:
@@ -18,7 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for better git operations
+          fetch-depth: 0  
 
       - name: Update contributor list
         id: contrib_list
@@ -28,7 +29,7 @@ jobs:
         with:
           readme_path: MAINTAINERS.md
           use_username: false
-          commit_message: "chore: update contributors information"
+          commit_message: "update contributors information"
 
       - name: Get contributors count
         id: get_contributors
@@ -39,7 +40,6 @@ jobs:
           OWNER=$(echo $REPO_INFO | awk '{print $1}')
           REPO=$(echo $REPO_INFO | awk '{print $2}')
           
-          # Using GitHub CLI for better error handling and rate limiting
           CONTRIBUTORS=$(gh api graphql -f query='
             query($owner: String!, $repo: String!) {
               repository(owner: $owner, name: $repo) {
@@ -55,11 +55,10 @@ jobs:
         run: |
           CONTRIBUTORS="${{ steps.get_contributors.outputs.contributors }}"
 
-          # Update contributor count with more reliable perl replacement
           perl -i -pe 's/(<!--CONTRIBUTOR COUNT START-->).*?(<!--CONTRIBUTOR COUNT END-->)/$1 '"$CONTRIBUTORS"' $2/' MAINTAINERS.md
           
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add MAINTAINERS.md
-          git commit -m "chore: update contributors count to $CONTRIBUTORS"
+          git commit -m "update contributors count to $CONTRIBUTORS"
           git push
