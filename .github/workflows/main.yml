@@ -48,6 +48,9 @@ jobs:
             }
           ' -f owner="$OWNER" -f repo="$REPO" --jq '.data.repository.collaborators.totalCount')
 
+          echo "contributors=$CONTRIBUTORS" >> $GITHUB_OUTPUT
+          echo "Retrieved $CONTRIBUTORS contributors"
+
       - name: Update MAINTAINERS.md
         run: |
           CONTRIBUTORS="${{ steps.get_contributors.outputs.contributors }}"
