@@ -7,11 +7,12 @@ on:
 jobs:
     contrib-readme-job:
         runs-on: ubuntu-latest
-        name: A job to automate contrib in readme
+        name: Update contributors info in MAINTAINERS.md
         permissions:
-          contents: write
-          pull-requests: write
+            contents: write
+            pull-requests: write
         steps:
+            # Update contributor list
             - name: Contribute List
               uses: akhilmhdh/contributors-readme-action@v2.3.10
               env:
