@@ -11,7 +11,7 @@ This is a list of maintainers for this project. See [CODEOWNERS.md](./CODEOWNERS
 
 ## Contributors
 
-Total number of contributors: <!--CONTRIBUTOR COUNT START--> 1 <!--CONTRIBUTOR COUNT END-->
+Total number of contributors: <!--CONTRIBUTOR COUNT START-->  <!--CONTRIBUTOR COUNT END-->
 
 <!-- readme: contributors -start -->
 <table>
