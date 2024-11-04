@@ -62,3 +62,9 @@ jobs:
           git add MAINTAINERS.md
           git commit -m "update contributors count to $CONTRIBUTORS" || exit 0
           git push
+
+      - name: Push protected
+        uses: CasperWA/push-protected@v2
+        with:
+          token: ${{ secrets.PUSH_TO_PROTECTED_BRANCH }}
+          branch: main
