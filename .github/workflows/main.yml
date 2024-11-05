@@ -14,7 +14,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,7 +25,9 @@ jobs:
         id: contrib_list
         uses: akhilmhdh/contributors-readme-action@v2.3.10
         env:
+          {% raw %}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          {% endraw %}
         with:
           readme_path: MAINTAINERS.md
           use_username: false
@@ -34,12 +36,14 @@ jobs:
       - name: Get contributors count
         id: get_contributors
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          {% raw %}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          {% endraw %}
         run: |
           REPO_INFO=$(echo $GITHUB_REPOSITORY | tr '/' ' ')
           OWNER=$(echo $REPO_INFO | awk '{print $1}')
           REPO=$(echo $REPO_INFO | awk '{print $2}')
-          
+
           CONTRIBUTORS=$(gh api graphql -f query='
             query($owner: String!, $repo: String!) {
               repository(owner: $owner, name: $repo) {
@@ -53,10 +57,12 @@ jobs:
 
       - name: Update MAINTAINERS.md
         run: |
+          {% raw %}
           CONTRIBUTORS="${{ steps.get_contributors.outputs.contributors }}"
+          {% endraw %}
 
           perl -i -pe 's/(<!--CONTRIBUTOR COUNT START-->).*?(<!--CONTRIBUTOR COUNT END-->)/$1 '"$CONTRIBUTORS"' $2/' MAINTAINERS.md
-          
+
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add MAINTAINERS.md
@@ -66,5 +72,7 @@ jobs:
       - name: Push protected
         uses: CasperWA/push-protected@v2
         with:
+          {% raw %}
           token: ${{ secrets.PUSH_TO_PROTECTED_BRANCH }}
+          {% endraw %}
           branch: main
