@@ -40,18 +40,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         run: |
-          REPO_INFO=$(echo $GITHUB_REPOSITORY | tr '/' ' ')
-          OWNER=$(echo $REPO_INFO | awk '{print $1}')
-          REPO=$(echo $REPO_INFO | awk '{print $2}')
-          
-          CONTRIBUTORS=$(gh api \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "/repos/$OWNER/$REPO/contributors?per_page=100" | \
-            jq '[.[] | select(.type != "Bot" and (.login | test("\\[bot\\]$") | not) and (.login | test("-bot$") | not))] | length')
+            OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
+            REPO=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
+            QUERY='query { repository(owner: \"'"$OWNER"'\", name: \"'"$REPO"'\") { collaborators { totalCount } } }'
+
+            CONTRIBUTORS=$(gh api \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "/repos/$OWNER/$REPO/contributors?per_page=100" | \
+              jq '[.[] | select(.type != "Bot" and (.login | test("\\[bot\\]$") | not) and (.login | test("-bot$") | not))] | length')
 
             echo "Total contributors: $CONTRIBUTORS"
             echo "contributors=$CONTRIBUTORS" >> $GITHUB_OUTPUT
+
 
       - name: Update MAINTAINERS.md
         run: |
@@ -65,7 +66,6 @@ jobs:
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add MAINTAINERS.md
           git commit -m "update contributors count to $CONTRIBUTORS" || exit 0
-          git push
 
       - name: Push protected
         uses: CasperWA/push-protected@v2
