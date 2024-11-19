@@ -13,7 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      # Use your forked and modified version
       - uses: sachin-panayil/repolinter-action@main
         with:
           output_type: 'pull-request'
