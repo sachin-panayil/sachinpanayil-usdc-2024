@@ -17,5 +17,4 @@ jobs:
         with:
           output_type: 'issue'
           token: ${{ secrets.GITHUB_TOKEN }}
-          config_file: 'repolinter.json'
           base_branch: 'main'
