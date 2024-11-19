@@ -1,0 +1,14 @@
+{
+    "axioms": {},
+    "rules": {
+      "readme-exists": {
+        "level": "error",
+        "rule": {
+          "type": "file-existence",
+          "options": {
+            "files": ["README.md"]
+          }
+        }
+      }
+    }
+}
