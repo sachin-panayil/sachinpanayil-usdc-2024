@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - uses: sachin-panayil/repolinter-action@v1.0.0 
+      - uses: sachin-panayil/repolinter-action@main
         with:
           output_type: 'pull-request'
           token: ${{ secrets.GITHUB_TOKEN }}
