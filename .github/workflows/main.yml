@@ -15,6 +15,6 @@ jobs:
       
       - uses: sachin-panayil/repolinter-action@main
         with:
-          output_type: 'issue'
+          output_type: 'pull-request'
           token: ${{ secrets.GITHUB_TOKEN }}
           base_branch: 'main'
