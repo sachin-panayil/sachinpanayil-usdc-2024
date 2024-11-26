@@ -1,7 +1,8 @@
 name: Test Modified Repolinter
 
 on:
-  workflow_dispatch: {}
+  push:   
+  workflow_dispatch: {} 
   
 jobs:
   repolint:
