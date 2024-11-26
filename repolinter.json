@@ -1,14 +1,51 @@
 {
-    "axioms": {},
-    "rules": {
-      "readme-exists": {
-        "level": "error",
-        "rule": {
-          "type": "file-existence",
-          "options": {
-            "files": ["README.md"]
-          }
+  "rules": {
+    "license-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAll": ["LICENSE*"],
+          "nocase": true
         }
-      }
+      },
+      "fix": "license-fix"
+    },
+    "readme-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-contents",
+        "options": {
+          "globsAll": ["README.md"],
+          "content": "# Project Name",
+          "flags": "i"
+        }
+      },
+      "fix": "readme-fix"
     }
+  },
+  "fixes": {
+    "license-fix": {
+      "type": "file-create",
+      "file": "LICENSE",
+      "text": {
+        "url": "https://opensource.org/licenses/MIT"
+      },
+      "replace": true
+    },
+    "readme-fix": {
+      "type": "file-modify",
+      "files": ["README.md"],
+      "text": "# Project Name\n\n## About\nThis project follows our organizational standards.",
+      "write_mode": "prepend",
+      "newlines": {
+        "end": 2
+      }
+    },
+    "remove-old-licenses": {
+      "type": "file-remove",
+      "globsAll": ["LICENSE.txt", "License.md"],
+      "nocase": true
+    }
+  }
 }
