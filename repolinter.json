@@ -14,6 +14,18 @@
         }
       }
     },
+    "readme-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [
+            "README.md"
+          ],
+          "nocase": true
+        }
+      }
+    },
     "readme-references-license": {
       "level": "error",
       "rule": {

@@ -1,7 +1,6 @@
 name: Test Modified Repolinter
 
 on:
-  push:   
   workflow_dispatch: {} 
   
 jobs:
