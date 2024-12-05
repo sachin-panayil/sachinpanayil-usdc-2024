@@ -1,18 +1,20 @@
-name: 'Validate master branch with Repolinter'
+name: 'Create a PR based on validation'
 
-on:
-  push:
-    branches:
-      - main
+on: 
+    workflow_dispatch: {} 
 
 jobs:
   repolinter-action:
     runs-on: ubuntu-latest
+    name: Run Repolinter
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: 'Run Repolinter'
-        uses: DSACMS/repolinter-actions@main
+        uses: DSACMS/repolinter-actions@main 
         with:
-          output_type: issue
+          output_type: 'pull-request'
           token: ${{ secrets.PUSH_TO_PROTECTED_BRANCH }}
