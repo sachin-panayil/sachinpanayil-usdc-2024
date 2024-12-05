@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-  # Because the output-type is set to 'issue', this job will always succeed.
   repolinter-action:
     runs-on: ubuntu-latest
     steps:
@@ -16,7 +15,4 @@ jobs:
         uses: DSACMS/repolinter-actions@main
         with:
           output_type: issue
-          # Optionally you can customize the issue and label repolinter-action will create
-          output_name: '[Bot] My Issue Title'
-          label_name: 'my-repolinter-label'
-          label_color: 'ffffff'
+          token: ${{ secrets.PUSH_TO_PROTECTED_BRANCH }}
