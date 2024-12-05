@@ -17,4 +17,4 @@ jobs:
         uses: DSACMS/repolinter-actions@main 
         with:
           output_type: 'pull-request'
-          token: ${{ secrets.PUSH_TO_PROTECTED_BRANCH }}
+          token: ${{ secrets.REPOLINTER_TOKEN }}
