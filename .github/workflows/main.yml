@@ -16,6 +16,6 @@ jobs:
       
       - uses: sachin-panayil/repolinter-action@main
         with:
-          output_type: 'pull-request'
+          output_type: 'issue'
           token: ${{ secrets.PUSH_TO_PROTECTED_BRANCH }}
           base_branch: 'main'
