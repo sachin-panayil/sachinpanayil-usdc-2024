@@ -1,21 +1,22 @@
-name: Test Modified Repolinter
+name: 'Validate master branch with Repolinter'
 
 on:
-  workflow_dispatch: {} 
-  
+  push:
+    branches:
+      - main
+
 jobs:
-  repolint:
+  # Because the output-type is set to 'issue', this job will always succeed.
+  repolinter-action:
     runs-on: ubuntu-latest
-    name: Run Modified Repolinter
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
     steps:
-      - uses: actions/checkout@v4
-      
-      - uses: DSACMS/repolinter-action@main
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: 'Run Repolinter'
+        uses: DSACMS/repolinter-actions@main
         with:
-          output_type: 'issue'
-          token: ${{ secrets.PUSH_TO_PROTECTED_BRANCH }}
-          base_branch: 'main'
+          output_type: issue
+          # Optionally you can customize the issue and label repolinter-action will create
+          output_name: '[Bot] My Issue Title'
+          label_name: 'my-repolinter-label'
+          label_color: 'ffffff'
